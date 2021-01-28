@@ -8,6 +8,8 @@ int main()
 	intList.pushFront(87);
 	
 	intList.pushFront(345);
+
+	intList.display();
 	
 	return 1;
 }

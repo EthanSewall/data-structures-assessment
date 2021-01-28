@@ -92,6 +92,11 @@ void DoubleLinkedList<T>::pushEnd(const T& value)
 	if (end != nullptr)
 	{
 		end->next = newNode;
+		end = newNode;
+	}
+	else
+	{
+		end = newNode;
 	}
 
 	if (front == nullptr)
