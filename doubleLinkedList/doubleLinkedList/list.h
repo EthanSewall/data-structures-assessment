@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+#include <iostream>
 
 template <typename T>
 class DoubleLinkedList
@@ -16,16 +16,9 @@ class DoubleLinkedList
 
 public:
 
-	DoubleLinkedList()
-	{
-		front = nullptr;
-		end = nullptr;
-	}
+	DoubleLinkedList();
 
-	~DoubleLinkedList()
-	{
-
-	}
+	~DoubleLinkedList();
 
 	void pushFront(const T& value);
 
@@ -35,9 +28,11 @@ public:
 
 	void popEnd();
 
-	T& front();
+	T& getFront();
 
-	T& end();
+	T& getEnd();
+
+	void display();
 };
 
 template <typename T>
@@ -69,9 +64,15 @@ void DoubleLinkedList<T>::pushFront(const T& value)
 	newNode->previous = nullptr;
 	newNode->next = front;
 
+
 	if (front != nullptr)
 	{
-		front->prev = newNode;
+		front->previous = newNode;
+		front = newNode;
+	}
+	else
+	{
+		front = newNode;
 	}
 
 	if (end == nullptr)
@@ -138,14 +139,25 @@ void DoubleLinkedList<T>::popEnd()
 }
 
 template <typename T>
-T& DoubleLinkedList<T>::front()
+T& DoubleLinkedList<T>::getFront()
 {
 	return front->data;
 }
 
 template <typename T>
-T& DoubleLinkedList<T>::end()
+T& DoubleLinkedList<T>::getEnd()
 {
 	return end->data;
+}
+
+template <typename T>
+void DoubleLinkedList<T>::display()
+{
+	node* current = front;
+	while (current != nullptr)
+	{
+		std::cout << current->data << std::endl;
+		current = current->next;
+	}
 }
 

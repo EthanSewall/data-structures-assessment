@@ -26,7 +26,6 @@ private:
 
 	Vertex* root;
 
-
 };
 
 template <typename T>
