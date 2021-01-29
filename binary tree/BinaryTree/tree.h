@@ -19,25 +19,29 @@ public:
 	~BinaryTree();
 
 	void Insertion(T &value);
-	void RecursiveInsertion(Vertex*& current, T& value);
 
 	void Search(T& value);
-	void RecursiveSearch(Vertex*& current, T& value);
 
 	void Display();
-	void RecursiveDisplay(Vertex*& current);
+
+	void Remove(T& value);
 
 private:
 	std::vector<Vertex*> vertices;
 
 	Vertex* root;
 
+	void RecursiveInsertion(Vertex*& current, T& value);
+	void RecursiveSearch(Vertex*& current, T& value);
+	void RecursiveDisplay(Vertex*& current);
+	void RecursiveRemove(Vertex*& current, T& value);
 };
 
 template <typename T>
 BinaryTree<T>::BinaryTree()
 {
 	root = nullptr;
+	previousVertex = nullptr;
 }
 
 template <typename T>
@@ -117,6 +121,61 @@ void BinaryTree<T>::RecursiveSearch(Vertex*& current, T& value)
 		{
 			RecursiveSearch(current->left, value);
 			RecursiveSearch(current->right, value);
+		}
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::Remove(T& value)
+{
+	RecursiveRemove(root, value);
+}
+
+template <typename T>
+void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
+{
+
+	if (current != nullptr)
+	{
+		if (current->left != nullptr)
+		{
+			if (current->left->data == value)
+			{
+				if (current->left->left == nullptr && current->left->right == nullptr)
+				{
+					delete current->left;
+					current->left = nullptr;
+				}
+				else if (current->left->left == nullptr ^ current->left->right == nullptr)
+				{
+					if (current->left->left == nullptr)
+					{
+						delete current->left;
+						current->left = current->left->right;
+					}
+					else
+					{
+						delete current->left;
+						current->left = current->left->left;
+					}
+				}
+				else
+				{
+
+				}
+			}
+		}
+		else if (current->right != nullptr)
+		{
+			if (current->right->data == value)
+			{
+
+			}
+		}
+		else
+		{
+			RecursiveRemove(current->left, value);
+			RecursiveRemove(current->right, value);
 		}
 	}
 }
