@@ -114,7 +114,7 @@ void DoubleLinkedList<T>::popFront()
 
 	if (front != nullptr)
 	{
-		front->prev = nullptr;
+		front->previous = nullptr;
 	}
 	else
 	{

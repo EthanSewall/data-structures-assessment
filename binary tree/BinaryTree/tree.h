@@ -93,6 +93,7 @@ void BinaryTree<T>::RecursiveInsertion(Vertex*& current, T& value)
 template <typename T>
 void BinaryTree<T>::Display()
 {
+	std::cout << "the root is " << root->data << std::endl;
 	RecursiveDisplay(root);
 }
 
@@ -140,7 +141,7 @@ void BinaryTree<T>::Remove(T& value)
 			delete root;
 			root = nullptr;
 		}
-		else if (root->left == nullptr ^ root->right == nullptr)
+		else if ((root->left == nullptr) ^ (root->right == nullptr))
 		{
 			if (root->left == nullptr)
 			{
@@ -185,7 +186,7 @@ void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 					delete current->left;
 					current->left = nullptr;
 				}
-				else if (current->left->left == nullptr ^ current->left->right == nullptr)
+				else if ((current->left->left == nullptr) ^ (current->left->right == nullptr))
 				{
 					if (current->left->left == nullptr)
 					{
@@ -220,7 +221,7 @@ void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 					delete current->right;
 					current->right = nullptr;
 				}
-				else if (current->right->left == nullptr ^ current->right->right == nullptr)
+				else if ((current->right->left == nullptr) ^ (current->right->right == nullptr))
 				{
 					if (current->right->left == nullptr)
 					{
