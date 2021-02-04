@@ -46,17 +46,13 @@ template <typename T>
 BinaryTree<T>::BinaryTree()
 {
 	root = nullptr;
-	previousVertex = nullptr;
 	replacement = nullptr;
 }
 
 template <typename T>
 BinaryTree<T>::~BinaryTree()
 {
-	for each (Vertex v in vertices)
-	{
-		delete v;
-	}
+	//make a recursive delete function
 }
 
 template <typename T>
@@ -71,7 +67,7 @@ void BinaryTree<T>::RecursiveInsertion(Vertex*& current, T& value)
 	if (current == nullptr)
 	{
 		current = new Vertex();
-		current->data = T;
+		current->data = value;
 		vertices.push_back(current);
 	}
 	else
