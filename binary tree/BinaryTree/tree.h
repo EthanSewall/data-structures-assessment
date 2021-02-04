@@ -31,10 +31,15 @@ private:
 
 	Vertex* root;
 
+	Vertex* replacement;
+
 	void RecursiveInsertion(Vertex*& current, T& value);
 	void RecursiveSearch(Vertex*& current, T& value);
 	void RecursiveDisplay(Vertex*& current);
 	void RecursiveRemove(Vertex*& current, T& value);
+
+	void FindReplacement(Vertex*& current);
+	void RecursiveReplacement(Vertex*& current);
 };
 
 template <typename T>
@@ -42,6 +47,7 @@ BinaryTree<T>::BinaryTree()
 {
 	root = nullptr;
 	previousVertex = nullptr;
+	replacement = nullptr;
 }
 
 template <typename T>
@@ -128,13 +134,47 @@ void BinaryTree<T>::RecursiveSearch(Vertex*& current, T& value)
 template <typename T>
 void BinaryTree<T>::Remove(T& value)
 {
-	RecursiveRemove(root, value);
+	if (root->data == value)
+	{
+		if (root->left == nullptr && root->right == nullptr)
+		{
+			delete root;
+			root = nullptr;
+		}
+		else if (root->left == nullptr ^ root->right == nullptr)
+		{
+			if (root->left == nullptr)
+			{
+				Vertex* holdThis = root->right;
+				delete root;
+				root = holdThis;
+			}
+			else
+			{
+				Vertex* holdThis = root->left;
+				delete root;
+				root = holdThis;
+			}
+		}
+		else
+		{
+			FindReplacement(root);
+			root->data = replacement->data;
+			root->left = replacement->left;
+			root->right = replacement->right;
+			delete replacement;
+			replacement = nullptr;
+		}
+	}
+	else
+	{
+		RecursiveRemove(root, value);
+	}
 }
 
 template <typename T>
 void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 {
-
 	if (current != nullptr)
 	{
 		if (current->left != nullptr)
@@ -150,18 +190,25 @@ void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 				{
 					if (current->left->left == nullptr)
 					{
+						Vertex* holdThis = current->left->right;
 						delete current->left;
-						current->left = current->left->right;
+						current->left = holdThis;
 					}
 					else
 					{
+						Vertex* holdThis = current->left->left;
 						delete current->left;
-						current->left = current->left->left;
+						current->left = holdThis;
 					}
 				}
 				else
 				{
-
+					FindReplacement(current->left);
+					current->left->data = replacement->data;
+					current->left->left = replacement->left;
+					current->left->right = replacement->right;
+					delete replacement;
+					replacement = nullptr;
 				}
 			}
 		}
@@ -169,7 +216,35 @@ void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 		{
 			if (current->right->data == value)
 			{
-
+				if (current->right->left == nullptr && current->right->right == nullptr)
+				{
+					delete current->right;
+					current->right = nullptr;
+				}
+				else if (current->right->left == nullptr ^ current->right->right == nullptr)
+				{
+					if (current->right->left == nullptr)
+					{
+						Vertex* holdThis = current->right->right;
+						delete current->right;
+						current->right = holdThis;
+					}
+					else
+					{
+						Vertex* holdThis = current->right->left;
+						delete current->right;
+						current->right = holdThis;
+					}
+				}
+				else
+				{
+					FindReplacement(current->right);
+					current->right->data = replacement->data;
+					current->right->left = replacement->left;
+					current->right->right = replacement->right;
+					delete replacement;
+					replacement = nullptr;
+				}
 			}
 		}
 		else
@@ -177,5 +252,31 @@ void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 			RecursiveRemove(current->left, value);
 			RecursiveRemove(current->right, value);
 		}
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::FindReplacement(Vertex*& current)
+{
+	if (current->right->left == nullptr)
+	{
+		replacement = current->right;
+	}
+	else
+	{
+		RecursiveReplacement(current->right);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::RecursiveReplacement(Vertex*& current)
+{
+	if (current->left == nullptr)
+	{
+		replacement = current;
+	}
+	else
+	{
+		RecursiveReplacement(current->left);
 	}
 }
