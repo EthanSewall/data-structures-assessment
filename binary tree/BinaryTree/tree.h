@@ -40,6 +40,9 @@ private:
 
 	void FindReplacement(Vertex*& current);
 	void RecursiveReplacement(Vertex*& current);
+
+	void Destruct();
+	void RecursiveDestruct(Vertex*& current);
 };
 
 template <typename T>
@@ -52,7 +55,7 @@ BinaryTree<T>::BinaryTree()
 template <typename T>
 BinaryTree<T>::~BinaryTree()
 {
-	//make a recursive delete function
+	Destruct();
 }
 
 template <typename T>
@@ -274,5 +277,24 @@ void BinaryTree<T>::RecursiveReplacement(Vertex*& current)
 	else
 	{
 		RecursiveReplacement(current->left);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::Destruct()
+{
+	RecursiveDestruct(root->left);
+	RecursiveDestruct(root->right);
+
+	delete root;
+}
+template <typename T>
+void BinaryTree<T>::RecursiveDestruct(Vertex*& current)
+{
+	if (current != nullptr)
+	{
+		RecursiveDestruct(current->left);
+		RecursiveDestruct(current->right);
+		delete current;
 	}
 }
