@@ -32,6 +32,10 @@ int main()
 	intList.popFront();
 
 	intList.display();
+
+	char abc = '\0';
+
+	std::cin >> abc;
 	
 	return 1;
 }

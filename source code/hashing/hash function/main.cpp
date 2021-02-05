@@ -13,5 +13,9 @@ int main()
 	std::cout << "hashing string: lorem ipsum" << std::endl;
 	std::cout << hash(h,11) << std::endl;
 	
+	char abc = '\0';
+
+	std::cin >> abc;
+
 	return 543;
 }

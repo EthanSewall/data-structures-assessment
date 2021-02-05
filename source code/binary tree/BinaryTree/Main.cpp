@@ -21,24 +21,44 @@ int main()
 	int h = 7;
 	theTree.Search(h);
 
-	std::cout << "inserting 2, 11, 5 to the tree" << std::endl;
+	std::cout << "inserting 2, 11, 5, 10 to the tree" << std::endl;
 
 	int a = 2;
 	int b = 11;
 	int c = 5;
+	int d = 10;
 
 	theTree.Insertion(a);
 	theTree.Insertion(b);
 	theTree.Insertion(c);
+	theTree.Insertion(d);
 
 	theTree.Display();
 
-	std::cout << "removing 11" << std::endl;
+	std::cout << "removing 10" << std::endl;
 
-	int e = 11;
+	int e = 10;
 	theTree.Remove(e);
 
 	theTree.Display();
+	
+	std::cout << "removing 1" << std::endl;
+
+	int f = 1;
+	theTree.Remove(f);
+
+	theTree.Display();
+	
+	std::cout << "removing 7" << std::endl;
+
+	int g = 7;
+	theTree.Remove(g);
+
+	theTree.Display();
+
+	char abc = '\0';
+
+	std::cin >> abc;
 
 	return 1;
 }
