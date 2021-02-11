@@ -19,7 +19,8 @@ int main()
 
 	std::cout << "searching for 7" << std::endl;
 	int h = 7;
-	theTree.Search(h);
+	BinaryTree<int>::Vertex* found;
+	theTree.Search(h, found);
 
 	std::cout << "inserting 2, 11, 5, 10 to the tree" << std::endl;
 

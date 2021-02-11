@@ -20,7 +20,7 @@ public:
 
 	void Insertion(T &value);
 
-	void Search(T& value);
+	bool Search(const T& value, Vertex*& found);
 
 	void Display();
 
@@ -33,8 +33,10 @@ private:
 
 	Vertex* previous;
 
+	bool condition;
+
 	void RecursiveInsertion(Vertex*& current, T& value);
-	void RecursiveSearch(Vertex*& current, T& value);
+	void RecursiveSearch(Vertex*& current, const T& value, Vertex*& found);
 	void RecursiveDisplay(Vertex*& current);
 	void RecursiveRemove(Vertex*& current, T& value);
 
@@ -47,6 +49,7 @@ BinaryTree<T>::BinaryTree()
 {
 	root = nullptr;
 	previous = nullptr;
+	condition = false;
 }
 
 template <typename T>
@@ -119,24 +122,28 @@ void BinaryTree<T>::RecursiveDisplay(Vertex*& current)
 }
 
 template <typename T>
-void BinaryTree<T>::Search(T& value)
+bool BinaryTree<T>::Search(const T& value, Vertex*& found)
 {
-	RecursiveSearch(root, value);
+	condition = false;
+	RecursiveSearch(root, value, found);
+	return condition;
 }
 
 template <typename T>
-void BinaryTree<T>::RecursiveSearch(Vertex*& current, T& value)
+void BinaryTree<T>::RecursiveSearch(Vertex*& current, const T& value, Vertex*& found)
 {
 	if (current != nullptr)
 	{
 		if (current->data == value)
 		{
 			std::cout << "the value is at " << &*current << std::endl;
+			condition = true;
+			found = current;
 		}
 		else
 		{
-			RecursiveSearch(current->left, value);
-			RecursiveSearch(current->right, value);
+			RecursiveSearch(current->left, value, found);
+			RecursiveSearch(current->right, value, found);
 		}
 	}
 }
