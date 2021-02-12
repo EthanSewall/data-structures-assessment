@@ -136,7 +136,6 @@ void BinaryTree<T>::RecursiveSearch(Vertex*& current, const T& value, Vertex*& f
 	{
 		if (current->data == value)
 		{
-			std::cout << "the value is at " << &*current << std::endl;
 			condition = true;
 			found = current;
 		}

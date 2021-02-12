@@ -32,19 +32,19 @@ public:
 		{
 			return current->data;
 		}
-		iterator operator++()
+
+		iterator& operator++(int h)
 		{
-			if (current->next != nullptr)
-			{
-				current = current.next;
-			}
+			
+			iterator* it = new iterator(current->next);
+			current = current->next;
+			return *it;
 		}
-		iterator operator--()
+		iterator& operator--(int h)
 		{
-			if (current->previous != nullptr)
-			{
-				current = current.previous;
-			}
+			iterator* it = new iterator(current->previous);
+			current = current->previous;
+			return *it;
 		}
 	};
 
@@ -52,17 +52,9 @@ public:
 
 	~DoubleLinkedList();
 
-	DoubleLinkedList<T>::iterator start()
-	{
-		auto it = new iterator(front);
-		return *it;
-	}
+	DoubleLinkedList<T>::iterator start();
 
-	DoubleLinkedList<T>::iterator finish()
-	{
-		auto it = new iterator(end);
-		return *it;
-	}
+	DoubleLinkedList<T>::iterator finish();
 
 	void pushFront(const T& value);
 
@@ -106,6 +98,20 @@ DoubleLinkedList<T>::~DoubleLinkedList()
 		delete current;
 		current = deletion;
 	}
+}
+
+template <typename T>
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::start()
+{
+	iterator *it = new iterator(front);
+	return *it;
+}
+
+template <typename T>
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::finish()
+{
+	iterator it = new iterator(end->next);
+	return *it;
 }
 
 template <typename T>

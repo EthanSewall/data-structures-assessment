@@ -45,10 +45,11 @@ int main()
 
 	intList->display();
 
-	std::cout << "generating iterator. List:" << std::endl;
+	std::cout << "" << std::endl;
 
-	auto iteration = intList->start();
-	intList->display();
+	std::cout << "generating iterator." << std::endl;
+	
+	DoubleLinkedList<int>::iterator iteration = intList->start();
 
 	std::cout << "Iterator position: " << iteration.data() << std::endl;
 

@@ -22,6 +22,8 @@ int main()
 	BinaryTree<int>::Vertex* found;
 	theTree.Search(h, found);
 
+	std::cout << "the value is at " << &*found << std::endl;
+
 	std::cout << "inserting 2, 11, 5, 10 to the tree" << std::endl;
 
 	int a = 2;
