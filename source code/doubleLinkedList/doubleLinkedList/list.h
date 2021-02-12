@@ -11,14 +11,58 @@ class DoubleLinkedList
 		node* previous;
 	};
 
+
+
 	node* front;
 	node* end;
 
 public:
 
+	struct iterator
+	{
+		node* current;
+
+	public:
+		iterator(node* Node)
+		{
+			current = Node;
+		}
+
+		T data()
+		{
+			return current->data;
+		}
+		iterator operator++()
+		{
+			if (current->next != nullptr)
+			{
+				current = current.next;
+			}
+		}
+		iterator operator--()
+		{
+			if (current->previous != nullptr)
+			{
+				current = current.previous;
+			}
+		}
+	};
+
 	DoubleLinkedList();
 
 	~DoubleLinkedList();
+
+	DoubleLinkedList<T>::iterator start()
+	{
+		auto it = new iterator(front);
+		return *it;
+	}
+
+	DoubleLinkedList<T>::iterator finish()
+	{
+		auto it = new iterator(end);
+		return *it;
+	}
 
 	void pushFront(const T& value);
 
@@ -227,7 +271,6 @@ bool DoubleLinkedList<T>::empty()
 		return false;
 	}
 }
-
 
 template <typename T>
 void DoubleLinkedList<T>::resize(int value)
