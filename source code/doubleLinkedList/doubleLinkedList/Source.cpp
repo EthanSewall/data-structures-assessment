@@ -33,6 +33,33 @@ int main()
 
 	intList.display();
 
+	std::cout << "removing 78. List:" << std::endl;
+
+	intList.remove(78);
+
+	intList.display();
+
+	std::cout << "resizing: 4. List:" << std::endl;
+
+	intList.resize(4);
+
+	intList.display();
+
+	std::cout << "resizing: 2. List:" << std::endl;
+
+	intList.resize(2);
+
+	intList.display();
+
+	std::cout << "clearing. List:" << std::endl;
+
+	intList.clear();
+
+	intList.display();
+
+	std::cout << "" << std::endl;
+	std::cout << "List.empty: " << intList.empty() << std::endl;
+
 	char abc = '\0';
 
 	std::cin >> abc;

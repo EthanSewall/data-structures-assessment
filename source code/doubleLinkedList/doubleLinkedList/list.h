@@ -33,6 +33,14 @@ public:
 	T& getEnd();
 
 	void display();
+
+	void remove(const T& value);
+
+	bool empty();
+
+	void clear();
+
+	void resize(int size);
 };
 
 template <typename T>
@@ -164,5 +172,102 @@ void DoubleLinkedList<T>::display()
 		std::cout << current->data << std::endl;
 		current = current->next;
 	}
+}
+
+template <typename T>
+void DoubleLinkedList<T>::remove(const T& value)
+{
+	node* current = front;
+	node* holdThis = nullptr;
+	while (current != nullptr)
+	{
+		if (current->data == value)
+		{
+			holdThis = current;
+
+			if (current->previous != nullptr)
+			{
+				current->previous->next = current->next;
+			}
+			if (current->next != nullptr)
+			{
+				current->next->previous = current->previous;
+			}
+
+			holdThis = current->next;
+			delete current;
+			current = holdThis;
+		}
+		else
+		{
+			current = current->next;
+		}
+		
+	}
+}
+
+template <typename T>
+void DoubleLinkedList<T>::clear()
+{
+	while (front != nullptr)
+	{
+		popFront();
+	}
+}
+
+template <typename T>
+bool DoubleLinkedList<T>::empty()
+{
+	if (front == nullptr && end == nullptr)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+template <typename T>
+void DoubleLinkedList<T>::resize(int value)
+{
+	int i = 0;
+	node* current = front;
+	bool longer = false;
+
+	for (; i < value+1; i++)
+	{
+		if (current == nullptr)
+		{
+			longer = true;
+			pushEnd(0);
+			current = end;
+		}
+		else
+		{
+			current = current->next;
+		}
+	}
+	if (!longer)
+	{
+		while (current-> next != nullptr)
+		{
+			i++;
+			if (current->next != nullptr)
+			{
+				current = current->next;
+			}
+		}
+
+		current = end;
+		node* holdThis = current->previous;
+		while (i+1 > value)
+		{
+			popEnd();
+			i--;
+		}
+	}
+	
 }
 
