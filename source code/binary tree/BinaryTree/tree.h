@@ -18,13 +18,14 @@ public:
 	BinaryTree();
 	~BinaryTree();
 
-	void Insertion(T &value);
+	void Insertion(const T &value);
 
 	bool Search(const T& value, Vertex*& found);
 
 	void Display();
 
-	void Remove(T& value);
+	void Remove(const T& value);
+	void Remove(Vertex* removeThis);
 
 private:
 	std::vector<Vertex*> vertices;
@@ -35,10 +36,11 @@ private:
 
 	bool condition;
 
-	void RecursiveInsertion(Vertex*& current, T& value);
+	void RecursiveInsertion(Vertex*& current, const T& value);
 	void RecursiveSearch(Vertex*& current, const T& value, Vertex*& found);
 	void RecursiveDisplay(Vertex*& current);
-	void RecursiveRemove(Vertex*& current, T& value);
+	void RecursiveRemove(Vertex*& current, const T& value);
+	void RecursiveRemove(Vertex*& current, Vertex* removeThis);
 
 	void Destruct();
 	void RecursiveDestruct(Vertex*& current);
@@ -59,13 +61,13 @@ BinaryTree<T>::~BinaryTree()
 }
 
 template <typename T>
-void BinaryTree<T>::Insertion(T& value)
+void BinaryTree<T>::Insertion(const T& value)
 {
 	RecursiveInsertion(root, value);
 }
 
 template <typename T>
-void BinaryTree<T>::RecursiveInsertion(Vertex*& current, T& value)
+void BinaryTree<T>::RecursiveInsertion(Vertex*& current, const T& value)
 {
 	if (current == nullptr)
 	{
@@ -126,6 +128,11 @@ bool BinaryTree<T>::Search(const T& value, Vertex*& found)
 {
 	condition = false;
 	RecursiveSearch(root, value, found);
+	if (!condition)
+	{
+		std::cout << "The requested value was not found." << std::endl;
+		found = nullptr;
+	}
 	return condition;
 }
 
@@ -148,14 +155,21 @@ void BinaryTree<T>::RecursiveSearch(Vertex*& current, const T& value, Vertex*& f
 }
 
 template <typename T>
-void BinaryTree<T>::Remove(T& value)
+void BinaryTree<T>::Remove(const T& value)
 {
 	previous = nullptr;
 	RecursiveRemove(root, value);
 }
 
 template <typename T>
-void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
+void BinaryTree<T>::Remove(Vertex* removeThis)
+{
+	previous = nullptr;
+	RecursiveRemove(root, removeThis);
+}
+
+template <typename T>
+void BinaryTree<T>::RecursiveRemove(Vertex*& current, const T& value)
 {
 	if (current != nullptr)
 	{
@@ -243,12 +257,103 @@ void BinaryTree<T>::RecursiveRemove(Vertex*& current, T& value)
 }
 
 template <typename T>
+void BinaryTree<T>::RecursiveRemove(Vertex*& current, Vertex* removeThis)
+{
+	if (current != nullptr)
+	{
+		if (current == removeThis)
+		{
+			int validPointers = 0;
+			if (current->right != nullptr)
+			{
+				validPointers++;
+			}
+			if (current->left != nullptr)
+			{
+				validPointers++;
+			}
+			switch (validPointers)
+			{
+			case 0:
+			{
+				if (previous != nullptr)
+				{
+					if (removeThis->data > previous->data)
+					{
+						previous->right = nullptr;
+					}
+					else
+					{
+						previous->left = nullptr;
+					}
+				}
+				delete current;
+			}
+			break;
+			case 1:
+			{
+				if (current->left != nullptr)
+				{
+					if (previous->data > removeThis->data)
+					{
+						previous->left = current->left;
+					}
+					else
+					{
+						previous->right = current->left;
+					}
+				}
+				else if (current->right != nullptr)
+				{
+					if (previous->data > removeThis->data)
+					{
+						previous->left = current->right;
+					}
+					else
+					{
+						previous->right = current->right;
+					}
+				}
+			}
+			break;
+			case 2:
+			{
+				Vertex* replacement = current->right;
+				while (replacement->left != nullptr)
+				{
+					replacement = replacement->left;
+				}
+
+				T holdThis = replacement->data;
+				Remove(holdThis);
+				current->data = holdThis;
+			}
+			break;
+			}
+		}
+		else
+		{
+			if (current->left != nullptr || current->right != nullptr)
+			{
+				previous = current;
+			}
+
+			RecursiveRemove(current->left, removeThis->data);
+			RecursiveRemove(current->right, removeThis->data);
+		}
+	}
+}
+
+template <typename T>
 void BinaryTree<T>::Destruct()
 {
-	RecursiveDestruct(root->left);
-	RecursiveDestruct(root->right);
+	if (root != nullptr)
+	{
+		RecursiveDestruct(root->left);
+		RecursiveDestruct(root->right);
 
-	delete root;
+		delete root;
+	}
 }
 template <typename T>
 void BinaryTree<T>::RecursiveDestruct(Vertex*& current)
